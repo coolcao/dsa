@@ -17,9 +17,9 @@ class LinkedList {
     }
 
     /**
-     * [find 查找元素，找到返回元素，如果没找到，返回null]
-     * @param  {[type]} element [要查找的元素]
-     * @return {[type]}         [要返回的节点]
+     * find 查找元素，找到返回元素，如果没找到，返回null
+     * @param  {element} element 要查找的元素
+     * @return {Node}         查找到的节点
      */
     find(element) {
         if(!element){
@@ -36,9 +36,9 @@ class LinkedList {
     }
 
     /**
-     * [findPrev 查找元素的上一个节点,如果找不到返回null]
-     * @param  {[type]} element [要查找的元素]
-     * @return {[type]}         [元素的上一个节点]
+     * findPrev 查找元素的上一个节点,如果找不到返回null
+     * @param  {element} element 要查找的元素
+     * @return {Node}         元素的上一个节点
      */
     findPrev(element) {
         let prevNode = null;
@@ -56,10 +56,10 @@ class LinkedList {
     }
 
     /**
-     * [insert 插入新元素]
-     * @param  {[type]} ne [要插入的新元素]
-     * @param  {[type]} e  [插入到原链表中这个元素后面]
-     * @return {[type]}    [description]
+     * insert 插入新元素
+     * @param  {element} ne 要插入的新元素
+     * @param  {element} e  插入到原链表中这个元素后面
+     * @return {null}    
      */
     insert(ne, e) {
         let currentNode = this.find(e) || this.head;
@@ -70,9 +70,9 @@ class LinkedList {
     }
 
     /**
-     * [remove 删除节点，先找到该节点前面的节点，然后进行删除]
-     * @param  {[type]} element [要删除的节点]
-     * @return {[type]}         [description]
+     * remove 删除节点，先找到该节点前面的节点，然后进行删除
+     * @param  {element} element 要删除的节点元素
+     * @return {null}         
      */
     remove(element) {
         let prevNode = this.findPrev(element);
@@ -81,16 +81,46 @@ class LinkedList {
         }
 
     }
-    display() {
+
+    /**
+     * 判断链表是否为空
+     * @return {Boolean} 为空返回true,否则返回false
+     */
+    isEmpty(){
+        let head = this.head;
+        return head.next == null;
+    }
+
+    /**
+     * 返回链表中元素个数
+     * @return {Number} 链表中元素个数
+     */
+    size(){
+        let i = 0;
         let currentNode = this.head;
-        let s = 'head -- > ';
         while (currentNode.next) {
             currentNode = currentNode.next;
-            s = s + currentNode.element + ' -- > ';
+            i++;
         }
-        s += null;
+        return i;
+    }
+
+
+    display() {
+        let currentNode = this.head;
+        let s = 'head';
+        while (currentNode.next) {
+            currentNode = currentNode.next;
+            s = s + '-->' + currentNode.element;
+        }
+
         return s;
     }
 }
 
+let llist = new LinkedList();
+llist.insert(1,this.head);
+console.log(llist.display());
+llist.remove(1);
+console.log(llist.display());
 module.exports = LinkedList;
