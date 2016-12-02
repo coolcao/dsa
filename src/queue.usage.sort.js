@@ -72,7 +72,6 @@ const sortByBase = function(array, base) {
     return r;
 }
 
-
 let array = [91, 46, 85, 15, 92, 35, 31, 22];
 array = sortByBase(array,1);
 array = sortByBase(array,10);

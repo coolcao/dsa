@@ -1,16 +1,18 @@
 'use strict';
 
-const Stack = require('./Stack.js');
+const Stack = require('../src/Stack.js');
 
-let s = new Stack();
+const divideBy2 = function divideBy2(decNumber) {
+    let s = new Stack();
+    let str = '';
+    while (decNumber > 0) {
+        s.push(Math.floor(decNumber %2));
+        decNumber = Math.floor(decNumber / 2);
+    }
+    while (!s.isEmpty()) {
+        str += s.pop().toString();
+    }
+    return str;
+}
 
-s.push(1);
-s.push(2);
-s.push(3);
-
-console.log(s.pop());
-console.log(s.pop());
-console.log(s.length());
-console.log(s.toString());
-console.log(s.data.length);
-
+console.log(divideBy2(102));
