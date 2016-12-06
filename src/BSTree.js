@@ -9,10 +9,10 @@ const preOrder = Symbol('preOrder');
 const postOrder = Symbol('postOrder');
 
 class Node {
-    constructor(data, left, right) {
-        this.left = left;
-        this.right = right;
+    constructor(data) {
         this.data = data;
+        this.left = null;
+        this.right = null;
     }
     getData() {
         return this.data;
@@ -88,6 +88,11 @@ class BSTree {
      *     1>查找删除节点左子树上的最大值 
      *     2>查找其右子树上的最小值
      */
+    /**
+     * 删除树的节点，并返回树的根节点
+     * @param {Node} node 树的根节点
+     * @param {Any}  data 要删除数据 
+     */
     [removeNode](node, data) {
         if (node == null) {
             return null;
@@ -125,7 +130,7 @@ class BSTree {
      * @param  {Array} result 暂存遍历结果
      */
     [inOrder](node, result) {
-        if (!(node == null)) {
+        if (node !== null) {
             this[inOrder](node.left, result);
             result.push(node.getData());
             this[inOrder](node.right, result);
@@ -138,7 +143,7 @@ class BSTree {
      * @param  {Array} result 暂存遍历结果
      */
     [preOrder](node, result) {
-        if (!(node == null)) {
+        if (node !== null) {
             result.push(node.getData());
             this[preOrder](node.left, result);
             this[preOrder](node.right, result);
@@ -151,7 +156,7 @@ class BSTree {
      * @param  {Array} result 暂存遍历结果
      */
     [postOrder](node, result) {
-        if (!(node == null)) {
+        if (node !== null) {
             this[preOrder](node.left, result);
             this[preOrder](node.right, result);
             result.push(node.getData());
@@ -268,16 +273,17 @@ let bst = new BSTree();
 for (let item of a) {
     bst.insert(item);
 }
-
-console.log(bst.inOrder());
-console.log(bst.preOrder());
-console.log(bst.min());
-console.log(bst.max());
-let value = 90;
-console.log(bst.search(value));
-bst.remove(value);
 console.log(bst.inOrder());
 console.log(bst.preOrder());
 console.log(bst.postOrder());
-
+console.log(bst.max());
+console.log(bst.min());
+console.log(bst.search(5));
+console.log(bst.search(100));
+bst.remove(21);
+console.log(bst.inOrder());
+bst.remove(100);
+console.log(bst.inOrder());
+bst.remove(98);
+console.log(bst.inOrder());
 module.exports = BSTree;
