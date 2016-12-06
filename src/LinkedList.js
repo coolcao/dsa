@@ -70,6 +70,20 @@ class LinkedList {
     }
 
     /**
+     * 链表末端添加元素
+     * @param  {element} e 要添加的元素
+     * @return {null}   
+     */
+    append(e){
+        let head = this.head;
+        let currentNode = head.next || head;
+        while (currentNode.next) {
+            currentNode = currentNode.next ;
+        }
+        currentNode.next = new Node(e);
+    }
+
+    /**
      * remove 删除节点，先找到该节点前面的节点，然后进行删除
      * @param  {element} element 要删除的节点元素
      * @return {null}         
@@ -118,9 +132,39 @@ class LinkedList {
     }
 }
 
-let llist = new LinkedList();
-llist.insert(1,this.head);
-console.log(llist.display());
-llist.remove(1);
-console.log(llist.display());
+var n1 = new Node(1);
+var n2 = new Node(2);
+var n3 = new Node(3);
+var n4 = new Node(4);
+var n5 = new Node(5);
+
+var llist = new LinkedList();
+llist.head.next = n1;
+n1.next = n2;
+n2.next = n3;
+n3.next = n4;
+n4.next = n5;
+n5.next = n2;
+
+
+
+var existLoop = function existLoop(llist){
+    let head = llist.head;
+    let slow = head;
+    let fast = head;
+    while (slow.next) {
+        slow = slow.next;
+        fast = fast.next && fast.next.next;
+        if(!fast){
+            return false;
+        }
+        if(fast.element == slow.element){
+            return true;
+        }
+    }
+}
+
+console.log(existLoop(llist));
+
+
 module.exports = LinkedList;
