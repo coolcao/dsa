@@ -2,6 +2,7 @@
 
 const min = Symbol('min');
 const max = Symbol('max');
+const search = Symbol('search');
 const removeNode = Symbol('removeNode');
 const inOrder = Symbol('inOrder');
 const preOrder = Symbol('preOrder');
@@ -30,25 +31,25 @@ class Node {
  */
 class BSTree {
     constructor() {
-        this.root = null;
-    }
-    /**
-     * 查找以node为父节点的子树的最小值
-     * @param  {[type]} node [父节点]
-     * @return {[type]}      [子树的最小值]
-     */
-    [min](node) {
-        let currentNode = node;
-        while (currentNode && currentNode.left) {
-            currentNode = currentNode.left;
+            this.root = null;
         }
-        return currentNode && currentNode.getData();
-    }
+        /**
+         * 查找以node为父节点的子树的最小值
+         * @param  {[type]} node [父节点]
+         * @return {[type]}      [子树的最小值]
+         */
+        [min](node) {
+            let currentNode = node;
+            while (currentNode && currentNode.left) {
+                currentNode = currentNode.left;
+            }
+            return currentNode && currentNode.getData();
+        }
 
     /**
      * 查找以node为父节点的子树的最大值
-     * @param  {[type]} node [父节点]
-     * @return {[type]}      [子树的最大值]
+     * @param  {Node} node 父节点
+     * @return {Any}      子树的最大值
      */
     [max](node) {
         let currentNode = node;
@@ -56,6 +57,24 @@ class BSTree {
             currentNode = currentNode.right;
         }
         return currentNode && currentNode.getData();
+    }
+
+    /**
+     * 查找元素
+     * @param  {Node} node 父节点
+     * @return {Boolean}      找到返回true，否则返回false
+     */
+    [search](node, data) {
+        if (node === null) {
+            return false;
+        }
+        if (data < node.getData()) {
+            return this[search](node.left, data);
+        } else if (data > node.getData()) {
+            return this[search](node.right, data);
+        } else {
+            return true;
+        }
     }
 
     /**
@@ -131,8 +150,8 @@ class BSTree {
      * @param  {Node} node 遍历树的根节点
      * @param  {Array} result 暂存遍历结果
      */
-    [postOrder](node,result) {
-        if(!(node == null)){
+    [postOrder](node, result) {
+        if (!(node == null)) {
             this[preOrder](node.left, result);
             this[preOrder](node.right, result);
             result.push(node.getData());
@@ -182,19 +201,7 @@ class BSTree {
      * @return {Boolean}         存在返回true,否则返回false
      */
     search(element) {
-        let currentNode = this.root;
-        let found = false;
-        while (currentNode) {
-            if (element > currentNode.getData()) {
-                currentNode = currentNode.right;
-            } else if (element < currentNode.getData()) {
-                currentNode = currentNode.left;
-            } else if (element == currentNode.getData()) {
-                found = true;
-                break;
-            }
-        }
-        return found;
+        return this[search](this.root, element);
     }
 
     /**
@@ -227,27 +234,27 @@ class BSTree {
      * 中序遍历，以数组的形式返回遍历结果
      * @return {Array} 遍历结果
      */
-    inOrder(){
+    inOrder() {
+            let result = [];
+            this[inOrder](this.root, result);
+            return result;
+        }
+        /**
+         * 先序遍历，以数组形式返回遍历结果
+         * @return {Array} 遍历结果
+         */
+    preOrder() {
+            let result = [];
+            this[preOrder](this.root, result);
+            return result;
+        }
+        /**
+         * 后序遍历，以数组形式返回遍历结果
+         * @return {Array} 遍历结果
+         */
+    postOrder() {
         let result = [];
-        this[inOrder](this.root,result);
-        return result;
-    }
-    /**
-     * 先序遍历，以数组形式返回遍历结果
-     * @return {Array} 遍历结果
-     */
-    preOrder(){
-        let result = [];
-        this[preOrder](this.root,result);
-        return result;
-    }
-    /**
-     * 后序遍历，以数组形式返回遍历结果
-     * @return {Array} 遍历结果
-     */
-    postOrder(){
-        let result = [];
-        this[postOrder](this.root,result);
+        this[postOrder](this.root, result);
         return result;
     }
 }
@@ -271,4 +278,4 @@ console.log(bst.inOrder());
 console.log(bst.preOrder());
 console.log(bst.postOrder());
 
-module.exports = Dictionary;
+module.exports = BSTree;
