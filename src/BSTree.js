@@ -31,20 +31,20 @@ class Node {
  */
 class BSTree {
     constructor() {
-            this.root = null;
+        this.root = null;
+    }
+    /**
+     * 查找以node为父节点的子树的最小值
+     * @param  {[type]} node [父节点]
+     * @return {[type]}      [子树的最小值]
+     */
+    [min](node) {
+        let currentNode = node;
+        while (currentNode && currentNode.left) {
+            currentNode = currentNode.left;
         }
-        /**
-         * 查找以node为父节点的子树的最小值
-         * @param  {[type]} node [父节点]
-         * @return {[type]}      [子树的最小值]
-         */
-        [min](node) {
-            let currentNode = node;
-            while (currentNode && currentNode.left) {
-                currentNode = currentNode.left;
-            }
-            return currentNode && currentNode.getData();
-        }
+        return currentNode && currentNode.getData();
+    }
 
     /**
      * 查找以node为父节点的子树的最大值
