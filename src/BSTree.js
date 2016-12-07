@@ -289,16 +289,16 @@ class BSTree {
     /**
      * 打印以node为节点的子树第level层节点
      */
-    [printLevel](node,level){
+    [printLevel](node,level,result){
         if(!node || level < 0){
             return false;
         }
         if(level == 0){
-            console.log(node.getData());
+            result.push(node.getData());
             return true;
         }
-        let pleft = this[printLevel](node.left,level-1);
-        let pright = this[printLevel](node.right,level-1);
+        let pleft = this[printLevel](node.left,level-1,result);
+        let pright = this[printLevel](node.right,level-1,result);
         return pleft || pright;
     }
 
@@ -308,16 +308,40 @@ class BSTree {
      * @return {Boolean}       成功返回ture,失败返回false
      */
     printLevel(level){
-        return this[printLevel](this.root,level);
+        let result = [];
+        this[printLevel](this.root,level,result);
+        return result;
     }
+
+    /**
+     * 计算树的深度
+     */
+    deep(){
+        let _deep = 0;
+        for(let i=0;;i++){
+            let pl = this.printLevel(i)
+            if(pl.length > 0){
+                _deep ++;
+            }else{
+                break;
+            }
+        }
+        return _deep;
+    }
+
 
     //递归打印所有层的节点
     levelTraversal2(){
+        let result = [];
         let i = 0;
-        for (i = 0; ; i++) {  
-        if (!this[printLevel](this.root, i))  
-            break;  
+        for (i = 0; ; i++) {
+            let pl = this.printLevel(i);
+            result = result.concat(pl);
+            if(pl.length == 0){
+                break;
+            }
         }
+        return result;
     }
 
 }

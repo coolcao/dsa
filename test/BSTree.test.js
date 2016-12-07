@@ -8,7 +8,8 @@ array.forEach(item => {
     bst.insert(item);
 });
 
-console.log(bst.inOrder());
-console.log(bst.preOrder());
-console.log(bst.postOrder());
-bst.printLevel(3);
+
+console.log(bst.printLevel(3));
+console.log(bst.levelTraversal2());
+
+console.log(bst.deep());
