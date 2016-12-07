@@ -157,8 +157,8 @@ class BSTree {
      */
     [postOrder](node, result) {
         if (node !== null) {
-            this[preOrder](node.left, result);
-            this[preOrder](node.right, result);
+            this[postOrder](node.left, result);
+            this[postOrder](node.right, result);
             result.push(node.getData());
         }
     };
