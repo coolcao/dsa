@@ -7,6 +7,9 @@ const removeNode = Symbol('removeNode');
 const inOrder = Symbol('inOrder');
 const preOrder = Symbol('preOrder');
 const postOrder = Symbol('postOrder');
+const printLevel = Symbol('printLevel');
+
+const Queue = require('./Queue.js');
 
 class Node {
     constructor(data) {
@@ -264,26 +267,59 @@ class BSTree {
         return result;
     };
 
+    levelTraversal(){
+        let result = [];
+        if(this.root){
+            let visted = new Queue();
+            visted.enqueue(this.root);
+            while (!visted.isEmpty()) {
+                let node = visted.dequeue();
+                result.push(node.getData());
+                if(node.left){
+                    visted.enqueue(node.left);
+                }
+                if(node.right){
+                    visted.enqueue(node.right);
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 打印以node为节点的子树第level层节点
+     */
+    [printLevel](node,level){
+        if(!node || level < 0){
+            return false;
+        }
+        if(level == 0){
+            console.log(node.getData());
+            return true;
+        }
+        let pleft = this[printLevel](node.left,level-1);
+        let pright = this[printLevel](node.right,level-1);
+        return pleft || pright;
+    }
+
+    /**
+     * 打印第level层的节点
+     * @param  {Number} level 要打印的层数
+     * @return {Boolean}       成功返回ture,失败返回false
+     */
+    printLevel(level){
+        return this[printLevel](this.root,level);
+    }
+
+    //递归打印所有层的节点
+    levelTraversal2(){
+        let i = 0;
+        for (i = 0; ; i++) {  
+        if (!this[printLevel](this.root, i))  
+            break;  
+        }
+    }
+
 }
 
-
-
-let a = [87, 234, 5, 21, 65, 23, 98, 98, 90];
-let bst = new BSTree();
-for (let item of a) {
-    bst.insert(item);
-}
-console.log(bst.inOrder());
-console.log(bst.preOrder());
-console.log(bst.postOrder());
-console.log(bst.max());
-console.log(bst.min());
-console.log(bst.search(5));
-console.log(bst.search(100));
-bst.remove(21);
-console.log(bst.inOrder());
-bst.remove(100);
-console.log(bst.inOrder());
-bst.remove(98);
-console.log(bst.inOrder());
 module.exports = BSTree;
