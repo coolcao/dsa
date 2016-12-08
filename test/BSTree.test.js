@@ -8,8 +8,16 @@ array.forEach(item => {
     bst.insert(item);
 });
 
+console.log(bst.preOrder());
+console.log(bst.postOrder());
+console.log('--------------');
 
-console.log(bst.printLevel(3));
-console.log(bst.levelTraversal2());
+let post = bst.postOrder();
+let bst2 = new BSTree();
+post.reduceRight((pre,current)=>{
+    pre.insert(current);
+    return pre;
+},bst2);
 
-console.log(bst.deep());
+console.log(bst2.preOrder());
+console.log(bst2.postOrder());

@@ -105,12 +105,4 @@ class Dictionary {
 
 }
 
-let dict = new Dictionary();
-dict.set('name','coolcao');
-
-console.log(dict.toString());
-
-console.log(dict.get('age'));
-
-
 module.exports = Dictionary;

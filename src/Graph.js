@@ -1,111 +1,142 @@
 'use strict';
 
+const dfs = Symbol('dfs');
+const bfs = Symbol('bfs');
+const Queue = require('./Queue.js');
+const resetVisted = Symbol('resetVisted');
+
 /**
  * 图类
  */
 class Graph {
     /**
-     * @param  {vertices}
-     * @return {Graph}
+     * 构造函数
+     * @param  {Array} vertices 顶点数组
+     * @return {Graph}         图实例对象 
      */
     constructor(vertices) {
         this.vertices = [];
+        this.adj = Object.create(null);    //用于存储邻接表
+        this.edges = 0; //边的条数
+        this.visited = Object.create(null);    //用于记录访问过的顶点
         if (Array.isArray(vertices)) {
             vertices.forEach(v => {
                 this.vertices.push(v);
+                this.adj[v] = [];
             });
         }
-        this.edges = 0; //边的条数
-        this.adj = []; //临接表
-        this.marked = [];
     }
+
+    /**
+     * 添加边
+     * @param {Any} v 顶点
+     * @param {Any} w 顶点
+     */
     addEdge(v, w) {
         let has_v = this.vertices.includes(v);
         let has_w = this.vertices.includes(w);
-        //首先判断这两个顶点是否是在顶点列表中
         if ( has_v && has_w ) {
-            if (this.adj.hasOwnProperty(v)) {
-                this.adj[v].push(w);
-            } else {
-                this.adj[v] = [];
-                this.adj[v].push(w);
-            }
-            if (this.adj.hasOwnProperty(w)) {
-                this.adj[w].push(v);
-            } else {
-                this.adj[w] = [];
-                this.adj[w].push(v);
-            }
+            this.adj[v].push(w);
+            this.adj[w].push(v);
             this.edges++;
         }else{
             throw new Error(has_v?`不存在顶点${w}`:`不存在顶点${v}`);
         }
+    }
 
+    /**
+     * 添加顶点
+     * @param {Any} v 要添加的顶点
+     */
+    addVertex(v){
+        this.vertices.push(v);
+        this.adj[v] = [];
     }
-    showGraph() {
-        let s = '';
-        let vertices = Object.keys(this.adj);
-        vertices.forEach((key) => {
-            s += (key + '-->');
-            this.adj[key].forEach((value) => {
-                s += (value + ' ');
-            });
-            s += '\n';
+
+    /**
+     * 显示图
+     */
+    toString() {
+        let vertices = this.vertices;
+        return vertices.reduce((pre,current)=>{
+            pre += ((current + ' --> ') + this.adj[current] + '\n');
+            return pre;
+        },'');
+    }
+
+    /**
+     * 重置访问顶点
+     */
+    [resetVisted](){
+        this.vertices.forEach(v => {
+            this.visited[v] = false;
+        })
+    }
+
+    /**
+     * 深度优先搜索
+     * @param {Any} v 访问顶点
+     * @param {Array} result 用于保存搜索结果的数组
+     */
+    [dfs](v,result){
+        this.visited[v] = true;
+        result.push(v);
+        this.adj[v].forEach(w => {
+            if(!this.visited[w]){
+                this[dfs](w,result);
+            }
         });
-        console.log(s);
     }
-    initMarked() {
-            let keys = Object.keys(this.adj);
-            keys.forEach((key) => {
-                this.marked[key] = false;
-            });
-        }
-        //深度优先搜索
+
+    /**
+     * 深度优先搜索
+     * @param  {Any} v 开始搜索的顶点
+     * @return {Array}   深度优先搜索返回的数组
+     */
     dfs(v) {
-        if (Object.keys(this.marked).length !== this.vertices.length) {
-            this.initMarked();
-        }
-        this.marked[v] = true;
-        if (this.adj[v] != undefined) {
-            console.log('visited vertex :' + v);
-        }
-        this.adj[v].forEach((w) => {
-            if (!this.marked[w]) {
-                this.dfs(w);
-            }
-        });
+        let result = [];
+        //每次访问之前，还原访问记录
+        this[resetVisted]();
+        this[dfs](v,result);
+        return result;
     }
 
-    bfs(s){
-        if (Object.keys(this.marked).length !== this.vertices.length) {
-            this.initMarked();
-        }
-        var queue = [];
-        this.marked[s] = true;
-        queue.push(s);  //添加到队尾
-        while (queue.length > 0) {
-            let v = queue.shift();  //从队首移除
-            if(this.adj[v] != undefined){
-                console.log('visisted vertex : ' + v);
-            }
-            this.adj[v].forEach((w)=>{
-                if(!this.marked[w]){
-                    this.marked[w] = true;
-                    queue.push(w);
+    /**
+     * 广度优先搜索
+     * @param {Any} v 访问的顶点
+     * @param {Array} result 用于保存访问结果的数组
+     */
+    [bfs](v,result){
+        this.visited[v] = true;
+        let queue = new Queue();
+        queue.enqueue(v);
+        while (queue.size() > 0) {
+            let _v = queue.dequeue();
+            result.push(_v);
+            this.adj[_v].forEach(w => {
+                if(!this.visited[w]){
+                    this.visited[w] = true;
+                    queue.enqueue(w);
                 }
-            });
+            })
         }
+
+        return result;
+    }
+
+    /**
+     * 广度优先搜索
+     * @param  {Any} s 开始搜索的顶点
+     * @return {Array}   搜索结果数组
+     */
+    bfs(s){
+        //每次遍历之前，还原访问记录
+        this[resetVisted]();
+        let result = [];
+        this[bfs](s,result);
+        return result;
     }
 
 }
 
-let vertices = ['a','b','c','d','e','f'];
-var g = new Graph(vertices);
-g.addEdge('a', 'b');
-g.addEdge('b', 'e');
-g.addEdge('b', 'c');
-g.addEdge('b', 'd');
-g.addEdge('c', 'f');
-g.addEdge('e', 'f');
-g.showGraph();
-g.bfs('b');
+module.exports = Graph;
