@@ -20,13 +20,13 @@ const removeGreen = function removeGreen(stack) {
     if(stack instanceof Stack){
         let s1 = new Stack();
         let s2 = new Stack();
-        while (stack.length() > 0) {
+        while (stack.size() > 0) {
             let item = stack.pop();
             if(item !== 'green'){
                 s1.push(item);
             }
         }
-        while (s1.length() > 0) {
+        while (s1.size() > 0) {
             s2.push(s1.pop());
         }
         return s2;

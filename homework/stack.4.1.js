@@ -19,17 +19,16 @@ var brackets_match = function brackets_match(exp) {
         if(c === '('){
             s.push(1);
         }else if(c === ')'){
-            if(s.length() === 0){
+            if(s.size() === 0){
                 return false;
             }
             s.pop();
         }
     }
-
-    return s.length() === 0;
+    return s.size() === 0;
 }
 
-console.log(brackets_match('2.3 + 23 / 12 + （3.14159×0.24'));
+console.log(brackets_match('2.3 + 23 / 12 + (3.14159×0.24'));
 
 /**
 上面这个函数只是判断了括号是否匹配，并没能返回不匹配的位置
@@ -47,13 +46,13 @@ var brackets_match_result = function brackets_match_result(exp) {
         if(c === '('){
             s.push({index:i,char:exp[i]});
         }else if(c === ')'){
-            if(s.length() === 0){
+            if(s.size() === 0){
                 return {match:false,result:s.toString()}
             }
             s.pop();
         }
     }
-    if(s.length() === 0){
+    if(s.size() === 0){
         return {match:true};
     }else{
         return {match:false,result:s.toString()}

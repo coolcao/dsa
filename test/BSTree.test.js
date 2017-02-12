@@ -9,6 +9,7 @@ array.forEach(item => {
 });
 
 console.log(bst.preOrder());
+console.log(bst.inOrder());
 console.log(bst.postOrder());
 console.log('--------------');
 

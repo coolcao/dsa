@@ -6,8 +6,11 @@ class Node {
         this.element = element;
         this.next = null;
     }
-    toString(){
+    data(){
         return this.element;
+    }
+    toString(){
+        return Object.prototype.toString.call(this.element);
     }
 }
 
@@ -69,18 +72,27 @@ class LinkedList {
         newNode.next = next;
     }
 
+    findLast(){
+        let currentNode = this.head;
+        while (currentNode.next) {
+            currentNode = currentNode.next;
+        }
+        return currentNode;
+    }
+
     /**
      * 链表末端添加元素
      * @param  {element} e 要添加的元素
      * @return {null}   
      */
     append(e){
-        let head = this.head;
-        let currentNode = head.next || head;
-        while (currentNode.next) {
-            currentNode = currentNode.next ;
-        }
-        currentNode.next = new Node(e);
+        // let head = this.head;
+        // let currentNode = head.next || head;
+        // while (currentNode.next) {
+        //     currentNode = currentNode.next ;
+        // }
+        let lastNode = this.findLast();
+        lastNode.next = new Node(e);
     }
 
     /**
@@ -132,39 +144,7 @@ class LinkedList {
     }
 }
 
-var n1 = new Node(1);
-var n2 = new Node(2);
-var n3 = new Node(3);
-var n4 = new Node(4);
-var n5 = new Node(5);
-
-var llist = new LinkedList();
-llist.head.next = n1;
-n1.next = n2;
-n2.next = n3;
-n3.next = n4;
-n4.next = n5;
-n5.next = n2;
 
 
 
-var existLoop = function existLoop(llist){
-    let head = llist.head;
-    let slow = head;
-    let fast = head;
-    while (slow.next) {
-        slow = slow.next;
-        fast = fast.next && fast.next.next;
-        if(!fast){
-            return false;
-        }
-        if(fast.element == slow.element){
-            return true;
-        }
-    }
-}
-
-console.log(existLoop(llist));
-
-
-module.exports = LinkedList;
+module.exports = {LinkedList,Node};

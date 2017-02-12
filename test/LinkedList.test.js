@@ -1,10 +1,14 @@
 'use strict';
 
-const LinkedList = require('../src/LinkedList.js');
+const LinkedList = require('../src/LinkedList.js').LinkedList;
 
 let llist = new LinkedList();
 llist.append(1);
-console.log(llist.display());
+llist.append(4);
+llist.append(8);
+llist.append(2);
+llist.append(9);
+llist.append(0);
 
 /**
  * 找出链表中倒数第n个元素
@@ -26,13 +30,21 @@ var findKthToTail = function findKthToTail(llist, n) {
     return rvalue;
 }
 
+console.log(findKthToTail(llist,2));
+
+/**
+ * 逆转链表
+ * @param  {LinkedList} llist 要逆转的链表
+ * @return {LinkedList}       逆转后的链表
+ */
 var reverseLinkedList = function reverseLinkedList(llist){
-    let pre = null;
     let head = llist.head;
+    let pre = null;
     let current = head.next;
     while (current){
         let next = current.next;
         current.next = pre;
+        //如果当前节点已为最后一个节点，将头指针指向这个节点
         if(!next){
             head.next = current;
             return llist;
@@ -43,18 +55,5 @@ var reverseLinkedList = function reverseLinkedList(llist){
     return llist;
 }
 
-
-
-var existLoop = function existLoop(llist){
-    let visted = [];
-    let current = llist.head;
-    while (current.next) {
-        if(visted.indexOf(current.element) > -1){
-            return true;
-        }
-        current = current.next;
-    }
-    return false;
-}
-
 console.log(reverseLinkedList(llist).display());
+
