@@ -343,7 +343,6 @@ class BSTree {
         }
         return result;
     }
-
 }
 
 module.exports = BSTree;
