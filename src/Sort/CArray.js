@@ -3,29 +3,26 @@
 //生成测试数组数据用的类
 class CArray {
     constructor(size = 0) {
-        this.size = size;
         this.data = [];
         if (size) {
-            this.setData();
+            this.setData(size);
         }
     }
 
-    setData() {
-        for (let i = 0; i < this.size; i++) {
-            this.data.push(Math.floor(Math.random() * (this.size + 1)));
+    setData(size) {
+        for (let i = 0; i < size; i++) {
+            this.data.push(Math.floor(Math.random() * (size + 1)));
         }
     }
 
     insert(item) {
         if (item) {
             this.data.push(item);
-            this.size++;
         }
     }
 
     clear() {
         this.data = [];
-        this.size = 0;
     }
 
     getData() {
@@ -52,7 +49,7 @@ class CArray {
      * 冒泡排序是一种稳定的排序算法
      */
     bubbleSort() {
-        let size = this.size;
+        let size = this.data.length;
         for (let outer = size - 1; outer > 0; outer--) {
             for (let inner = 0; inner < outer; inner++) {
                 if (this.data[inner] > this.data[inner + 1]) {
@@ -69,9 +66,10 @@ class CArray {
      * 其实很简单，就是依次从未排好序的剩余元素中选择最小的，放到已排序的最后面
      */
     selectionSort() {
-        for (let i = 0; i < this.size - 1; i++) {
+        let size = this.data.length;
+        for (let i = 0; i < size - 1; i++) {
             let min = i;
-            for (let j = i; j < this.size; j++) {
+            for (let j = i; j < size; j++) {
                 if (this.data[min] > this.data[j]) {
                     min = j;
                 }
@@ -88,7 +86,7 @@ class CArray {
      * 插入排序
      */
     insertionSort() {
-        let size = this.size;
+        let size = this.data.length;
         for (let outer = 1; outer < size; outer++) {
             let tmp = this.data[outer];
             let inner = outer;
@@ -101,7 +99,7 @@ class CArray {
     }
 
     toString() {
-        let size = this.size;
+        let size = this.data.length;
         let str = '';
         for (let i = 0; i < size; i++) {
             str += this.data[i] + ' ';

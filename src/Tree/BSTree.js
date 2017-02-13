@@ -9,7 +9,7 @@ const preOrder = Symbol('preOrder');
 const postOrder = Symbol('postOrder');
 const printLevel = Symbol('printLevel');
 
-const Queue = require('./Queue.js');
+const Queue = require('../Queue/Queue.js');
 
 class Node {
     constructor(data) {

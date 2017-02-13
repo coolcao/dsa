@@ -1,5 +1,5 @@
 'use strict';
-const BSTree = require('../src/BSTree.js');
+const BSTree = require('../src/Tree/BSTree.js');
 
 let array = [ 87, 5, 21, 65, 23, 234, 98, 90, 98 ];
 
@@ -22,3 +22,5 @@ post.reduceRight((pre,current)=>{
 
 console.log(bst2.preOrder());
 console.log(bst2.postOrder());
+console.log('================');
+console.log(bst2.printLevel(2));
