@@ -27,14 +27,18 @@ class Graph {
         }
     }
 
+    hasVertice(v){
+        return this.vertices.includes(v);
+    }
+
     /**
      * 添加边
      * @param {Any} v 顶点
      * @param {Any} w 顶点
      */
     addEdge(v, w) {
-        let has_v = this.vertices.includes(v);
-        let has_w = this.vertices.includes(w);
+        let has_v = this.hasVertice(v);
+        let has_w = this.hasVertice(w);
         if ( has_v && has_w ) {
             this.adj[v].push(w);
             this.adj[w].push(v);
@@ -106,22 +110,26 @@ class Graph {
      * @param {Any} v 访问的顶点
      * @param {Array} result 用于保存访问结果的数组
      */
-    [bfs](v,result){
+    [bfs](v){
+        let distance = [];      //标记距离
+        let predecessors = [];  //用于标记千溯节点
+        let level = 0;
         this.visited[v] = true;
         let queue = new Queue();
-        queue.enqueue(v);
+        queue.enqueue({value:v,level:level});
         while (queue.size() > 0) {
             let _v = queue.dequeue();
-            result.push(_v);
-            this.adj[_v].forEach(w => {
+            distance.push(_v);
+            this.adj[_v.value].forEach(w => {
                 if(!this.visited[w]){
                     this.visited[w] = true;
-                    queue.enqueue(w);
+                    queue.enqueue({value:w,level:_v.level+1});
+                    predecessors.push({value:w,pre:_v.value});
                 }
             })
         }
 
-        return result;
+        return {distance:distance,predecessors:predecessors};
     }
 
     /**
@@ -132,9 +140,66 @@ class Graph {
     bfs(s){
         //每次遍历之前，还原访问记录
         this[resetVisted]();
-        let result = [];
-        this[bfs](s,result);
-        return result;
+        let result = this[bfs](s);
+        let distance = result.distance.map(item => {
+            return item.value;
+        });
+        return distance;
+    }
+
+    /**
+     * 计算两个节点之间最短距离
+     * @param  {Any} s 元素
+     * @param  {Any} d 元素
+     * @return {Number}   之间的最短距离
+     */
+    minPath(s,d){
+
+        if(!this.hasVertice(s) || !this.hasVertice(d)){
+            throw new Error('不存在顶点，请检查');
+        }
+
+        let path = [];
+        let minPath = 0;
+
+        //重置访问节点
+        this[resetVisted]();
+        //以s为起点，进行广度遍历
+        let result = this[bfs](s);
+
+        let distance = result.distance;
+        let predecessors = result.predecessors;
+
+        //计算最小距离
+        for(let item of distance){
+            if(item.value === d){
+                minPath = item.level;
+            }
+        }
+
+
+        //查找前溯节点
+        let findPre = function (v,predecessors) {
+            for(let pre of predecessors){
+                if(pre.value === v){
+                    return pre.pre;
+                }
+            }
+            return null;
+        }
+        //根据前置节点追溯路径
+        let node = d;
+        path.unshift(d);
+        let pre = findPre(node,predecessors);
+        while (pre && pre!== s ) {
+            path.unshift(pre);
+            node = pre;
+            pre = findPre(node,predecessors);
+        }
+        path.unshift(s);
+
+        return {min:minPath,path:path}
+
     }
 
 }
