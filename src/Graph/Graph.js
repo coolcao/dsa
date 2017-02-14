@@ -2,7 +2,7 @@
 
 const dfs = Symbol('dfs');
 const bfs = Symbol('bfs');
-const Queue = require('./Queue.js');
+const Queue = require('../Queue/Queue.js');
 const resetVisted = Symbol('resetVisted');
 
 /**
