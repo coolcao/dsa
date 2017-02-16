@@ -1,4 +1,4 @@
-W'use strict';
+'use strict';
 /**
  * 1）动态规划是运筹学中用于求解决策过程中的最优化数学方法。 当然，我们在这里关注的是作为一种算法设计技术，作为一种使用多阶段决策过程最优的通用方法。
  * 它是应用数学中用于解决某类最优化问题的重要工具。
@@ -31,5 +31,21 @@ let dynFib = function(n) {
     return result[n];
 }
 
+/**
+ * 尾递归求解斐波那契
+ * @param  {Number} n    求解第几个
+ * @param  {Number} pre1 第n个数
+ * @param  {Number} pre2 第n个与第n+1个之和
+ * @return {Number}      
+ */
+let fibByTailRecursion = function(n, pre1, pre2) {
+    console.log(pre2);
+    if (n < 2) {
+        return pre1;
+    } else {
+        return fibByTailRecursion(n - 1, pre2, pre1 + pre2);
+    }
+}
 
-console.log(dynFib(5));
+
+console.log(fibByTailRecursion(5, 1, 1));
