@@ -1,2 +1,5 @@
 .idea/*
 .vscode/*
+
+c/.DS_Store
+a.out*
